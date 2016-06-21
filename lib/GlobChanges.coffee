@@ -53,15 +53,17 @@ class GlobChanges
 
       @fileCache.get key
       .then ( cached )=>
-        if cached?
-          hash = sha1 str
-          oldHash = sha1 cached.contents
-          return if hash is oldHash
-
         change =
           added : []
           removed : []
           changed : []
+          all : Object.keys info
+          
+        if cached?
+          hash = sha1 str
+          oldHash = sha1 cached.contents
+          return change if hash is oldHash
+
         if !cached?
           change.added = Object.keys info
         else

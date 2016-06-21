@@ -47,7 +47,9 @@ describe 'globChanges', ->
       assert results isnt undefined
       globber.changes 'fixtures', pattern
     .then ( results ) ->
-      assert results is undefined
+      assert results.added.length is 0
+      assert results.changed.length is 0
+      assert results.removed.length is 0
       done()
     .fail done
 
@@ -59,7 +61,6 @@ describe 'globChanges', ->
       assert results isnt undefined
       globber.changes 'fixtures', pattern
     .then ( results ) ->
-      assert results is undefined
       shell.mkdir 'test/fixtures/dir2'
       shell.touch 'test/fixtures/dir2/dir2.coffee'
       globber.changes 'fixtures', pattern
