@@ -33,8 +33,8 @@ class GlobChanges
 
   changes : ( key, patterns, opts ) =>
     _opts = _.extend {}, opts, stat : true
-    new Q.promise ( resolve ) =>
-      g = glob patterns, _opts, ( err, res ) =>
+    new Q.promise ( resolve ) ->
+      g = glob patterns, _opts, ( err, res ) ->
         info = {}
         missing = []
         for x in res or []
@@ -43,7 +43,8 @@ class GlobChanges
           else
             missing.push x
 
-        throw new Error "Couldn't stat the following: #{missing}" if missing.length
+        if missing.length
+          throw new Error "Couldn't stat the following: #{missing}"
         resolve info
 
     .then ( info ) =>
@@ -77,7 +78,7 @@ class GlobChanges
               change.changed.push f
 
         @fileCache.set key, str
-        .then => change
+        .then -> change
 
 module.exports = GlobChanges
 
